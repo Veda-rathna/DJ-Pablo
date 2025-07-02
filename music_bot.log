@@ -102,3 +102,20 @@
 2025-07-02 13:55:34,038 - INFO - Finished playing 'Samajavaragamana' in guild 795978474832658434
 2025-07-02 13:55:34,085 - INFO - ffmpeg process 22040 successfully terminated with return code of 0.
 2025-07-02 13:55:34,101 - INFO - Playing next song in guild 795978474832658434: 'Vaarayo Vaarayo' (Spotify: True)
+2025-07-02 14:00:11,155 - INFO - Finished playing 'Vaarayo Vaarayo' in guild 795978474832658434
+2025-07-02 14:00:11,156 - INFO - Playing next song in guild 795978474832658434: 'Enkeyoo Partha' (Spotify: True)
+2025-07-02 14:00:11,156 - INFO - ffmpeg process 20088 successfully terminated with return code of 0.
+2025-07-02 14:00:14,925 - INFO - Background processing complete for guild 795978474832658434: 233/235 tracks added successfully
+2025-07-02 14:05:14,644 - INFO - Finished playing 'Enkeyoo Partha' in guild 795978474832658434
+2025-07-02 14:05:14,645 - INFO - Playing next song in guild 795978474832658434: 'Veyyon Silli' (Spotify: True)
+2025-07-02 14:05:14,645 - INFO - ffmpeg process 19820 successfully terminated with return code of 0.
+2025-07-02 14:10:18,732 - INFO - Finished playing 'Veyyon Silli' in guild 795978474832658434
+2025-07-02 14:10:18,733 - INFO - Playing next song in guild 795978474832658434: 'Mundhinam' (Spotify: True)
+2025-07-02 14:10:18,733 - INFO - ffmpeg process 11928 successfully terminated with return code of 0.
+2025-07-02 14:18:44,893 - INFO - The voice handshake is being terminated for Channel ID 795985639321501707 (Guild ID 795978474832658434)
+2025-07-02 14:18:44,893 - INFO - Finished playing 'Mundhinam' in guild 795978474832658434
+2025-07-02 14:18:44,893 - INFO - ffmpeg process 10604 has not terminated. Waiting to terminate...
+2025-07-02 14:18:44,894 - INFO - Playing next song in guild 795978474832658434: 'Agayam Theepiditha' (Spotify: True)
+2025-07-02 14:18:44,899 - INFO - ffmpeg process 10604 should have terminated with a return code of 1.
+2025-07-02 14:18:44,902 - INFO - ffmpeg process 19660 has not terminated. Waiting to terminate...
+2025-07-02 14:18:44,904 - INFO - ffmpeg process 19660 should have terminated with a return code of 1.

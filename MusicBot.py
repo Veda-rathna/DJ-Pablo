@@ -12,6 +12,7 @@ from spotipy.oauth2 import SpotifyClientCredentials # NEW
 import re # NEW - For URL pattern matching
 import logging # NEW - For server logging
 from datetime import datetime # NEW - For timestamps
+import random # NEW - For shuffle functionality
 
 # Environment variables for tokens and other sensitive data
 load_dotenv()
