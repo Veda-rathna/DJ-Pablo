@@ -74,3 +74,31 @@
 2025-07-02 13:42:38,615 - INFO - ffmpeg process 10092 should have terminated with a return code of 1.
 2025-07-02 13:42:38,618 - INFO - ffmpeg process 19656 has not terminated. Waiting to terminate...
 2025-07-02 13:42:38,622 - INFO - ffmpeg process 19656 should have terminated with a return code of 1.
+2025-07-02 13:42:43,335 - INFO - logging in using static token
+2025-07-02 13:42:45,148 - INFO - Shard ID None has connected to Gateway (Session ID: 8e32d4c34bab9acc40dd71d04a19dc21).
+2025-07-02 13:42:48,539 - INFO - Bot DJ_Pavlo#4392 is online and ready!
+2025-07-02 13:42:58,585 - INFO - User pablokun (546228577784561675) requested to play: 'https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=198cf2ae54b54897' in guild 795978474832658434
+2025-07-02 13:42:58,587 - INFO - Connecting to voice...
+2025-07-02 13:42:58,587 - INFO - Starting voice handshake... (connection attempt 1)
+2025-07-02 13:42:59,094 - INFO - Voice handshake complete. Endpoint found: hongkong11045.discord.media
+2025-07-02 13:42:59,729 - INFO - Voice connection complete.
+2025-07-02 13:42:59,738 - INFO - Processing Spotify URL: https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=198cf2ae54b54897 in guild 795978474832658434
+2025-07-02 13:43:01,204 - INFO - Found 236 tracks from Spotify URL in guild 795978474832658434
+2025-07-02 13:43:05,541 - INFO - Successfully queued Spotify track 'Meyaadha Maan | Idhayam Love - Megamo Aval Video Song | Vaibhav, Priya | Santhosh Narayanan' in guild 795978474832658434
+2025-07-02 13:43:06,055 - INFO - Playing next song in guild 795978474832658434: 'Idhayam Love (Megamo Aval)' (Spotify: True)
+2025-07-02 13:43:06,588 - INFO - Processing 235 additional tracks in background for guild 795978474832658434
+2025-07-02 13:43:06,588 - INFO - Starting background processing of 235 tracks for guild 795978474832658434
+2025-07-02 13:43:11,540 - INFO - User pablokun (546228577784561675) shuffled queue (1 songs) in guild 795978474832658434
+2025-07-02 13:45:59,515 - INFO - User pablokun (546228577784561675) shuffled queue (41 songs) in guild 795978474832658434
+2025-07-02 13:47:44,692 - WARNING - Error adding track 'Karthik, Prashanthini - Vizhi Moodi' in guild 795978474832658434: [0;31mERROR:[0m [youtube] YDaOQz6-nrA: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:47:45,250 - INFO - Finished playing 'Idhayam Love (Megamo Aval)' in guild 795978474832658434
+2025-07-02 13:47:45,400 - INFO - Playing next song in guild 795978474832658434: 'Yaaro Ivan (From "Udhayam NH4")' (Spotify: True)
+2025-07-02 13:47:45,400 - INFO - ffmpeg process 17672 successfully terminated with return code of 0.
+2025-07-02 13:48:03,685 - INFO - User pablokun (546228577784561675) shuffled queue (67 songs) in guild 795978474832658434
+2025-07-02 13:50:01,022 - WARNING - Error adding track 'Vijay, Shreya Ghoshal - Kandaangi Kandaangi' in guild 795978474832658434: [0;31mERROR:[0m [youtube] 5sgyM-N6BnA: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:51:43,786 - INFO - Finished playing 'Yaaro Ivan (From "Udhayam NH4")' in guild 795978474832658434
+2025-07-02 13:51:43,834 - INFO - ffmpeg process 5076 successfully terminated with return code of 0.
+2025-07-02 13:51:43,851 - INFO - Playing next song in guild 795978474832658434: 'Samajavaragamana' (Spotify: True)
+2025-07-02 13:55:34,038 - INFO - Finished playing 'Samajavaragamana' in guild 795978474832658434
+2025-07-02 13:55:34,085 - INFO - ffmpeg process 22040 successfully terminated with return code of 0.
+2025-07-02 13:55:34,101 - INFO - Playing next song in guild 795978474832658434: 'Vaarayo Vaarayo' (Spotify: True)
