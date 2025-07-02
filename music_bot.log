@@ -1,0 +1,76 @@
+2025-07-02 13:11:15,004 - INFO - logging in using static token
+2025-07-02 13:11:16,676 - INFO - Shard ID None has connected to Gateway (Session ID: 850aba147f333afc6d8d59aff4e8b0cf).
+2025-07-02 13:11:19,280 - INFO - Bot DJ_Pavlo#4392 is online and ready!
+2025-07-02 13:11:25,516 - INFO - User pablokun (546228577784561675) requested to play: 'The one' in guild 795978474832658434
+2025-07-02 13:11:25,516 - INFO - Connecting to voice...
+2025-07-02 13:11:25,517 - INFO - Starting voice handshake... (connection attempt 1)
+2025-07-02 13:11:26,032 - INFO - Voice handshake complete. Endpoint found: hongkong11045.discord.media
+2025-07-02 13:11:26,662 - INFO - Voice connection complete.
+2025-07-02 13:11:31,815 - INFO - Playing next song in guild 795978474832658434: 'THE ONE - RETRO | Suriya | Karthik Subbaraj | Santhosh Narayanan | Sid Sriram | SVDP | Vivek' (Spotify: False)
+2025-07-02 13:12:44,169 - INFO - User pablokun (546228577784561675) requested to play: 'https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=16f77e87353941cf' in guild 795978474832658434
+2025-07-02 13:12:44,170 - INFO - Processing Spotify URL: https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=16f77e87353941cf in guild 795978474832658434
+2025-07-02 13:12:44,997 - INFO - Found 100 tracks from Spotify URL in guild 795978474832658434
+2025-07-02 13:12:48,816 - INFO - Successfully queued Spotify track 'Meyaadha Maan | Idhayam Love - Megamo Aval Video Song | Vaibhav, Priya | Santhosh Narayanan' in guild 795978474832658434
+2025-07-02 13:12:49,440 - INFO - Processing 99 additional tracks in background for guild 795978474832658434
+2025-07-02 13:12:49,440 - INFO - Starting background processing of 99 tracks for guild 795978474832658434
+2025-07-02 13:13:29,126 - WARNING - Error adding track 'G. V. Prakash, S. P. Balasubrahmanyam, S.P. Charan, Prashanthini - Ayyayo' in guild 795978474832658434: [0;31mERROR:[0m [youtube] uxb-TMoqb9k: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:13:52,054 - INFO - The voice handshake is being terminated for Channel ID 795985639321501707 (Guild ID 795978474832658434)
+2025-07-02 13:13:52,073 - INFO - Finished playing 'THE ONE - RETRO | Suriya | Karthik Subbaraj | Santhosh Narayanan | Sid Sriram | SVDP | Vivek' in guild 795978474832658434
+2025-07-02 13:13:52,074 - INFO - Playing next song in guild 795978474832658434: 'Idhayam Love (Megamo Aval)' (Spotify: True)
+2025-07-02 13:13:52,073 - INFO - ffmpeg process 18088 has not terminated. Waiting to terminate...
+2025-07-02 13:13:52,079 - INFO - ffmpeg process 18088 should have terminated with a return code of 1.
+2025-07-02 13:13:52,082 - INFO - ffmpeg process 20708 has not terminated. Waiting to terminate...
+2025-07-02 13:13:52,084 - INFO - ffmpeg process 20708 should have terminated with a return code of 1.
+2025-07-02 13:13:59,561 - INFO - logging in using static token
+2025-07-02 13:14:01,291 - INFO - Shard ID None has connected to Gateway (Session ID: f2ab3b58e0677d32051e3c5d73ebc995).
+2025-07-02 13:14:04,087 - INFO - Bot DJ_Pavlo#4392 is online and ready!
+2025-07-02 13:14:11,075 - INFO - User pablokun (546228577784561675) requested to play: 'https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=16f77e87353941cf' in guild 795978474832658434
+2025-07-02 13:14:11,076 - INFO - Connecting to voice...
+2025-07-02 13:14:11,076 - INFO - Starting voice handshake... (connection attempt 1)
+2025-07-02 13:14:11,579 - INFO - Voice handshake complete. Endpoint found: hongkong11045.discord.media
+2025-07-02 13:14:12,584 - INFO - Voice connection complete.
+2025-07-02 13:14:12,592 - INFO - Processing Spotify URL: https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=16f77e87353941cf in guild 795978474832658434
+2025-07-02 13:14:13,226 - INFO - Found 100 tracks from Spotify URL in guild 795978474832658434
+2025-07-02 13:14:17,727 - INFO - Successfully queued Spotify track 'Meyaadha Maan | Idhayam Love - Megamo Aval Video Song | Vaibhav, Priya | Santhosh Narayanan' in guild 795978474832658434
+2025-07-02 13:14:18,203 - INFO - Playing next song in guild 795978474832658434: 'Idhayam Love (Megamo Aval)' (Spotify: True)
+2025-07-02 13:14:18,813 - INFO - Processing 99 additional tracks in background for guild 795978474832658434
+2025-07-02 13:14:18,813 - INFO - Starting background processing of 99 tracks for guild 795978474832658434
+2025-07-02 13:16:31,736 - INFO - The voice handshake is being terminated for Channel ID 795985639321501707 (Guild ID 795978474832658434)
+2025-07-02 13:16:31,752 - INFO - Finished playing 'Idhayam Love (Megamo Aval)' in guild 795978474832658434
+2025-07-02 13:16:31,752 - INFO - Playing next song in guild 795978474832658434: 'Mundhinam' (Spotify: True)
+2025-07-02 13:16:31,752 - INFO - ffmpeg process 19296 has not terminated. Waiting to terminate...
+2025-07-02 13:16:31,758 - INFO - ffmpeg process 19296 should have terminated with a return code of 1.
+2025-07-02 13:16:31,761 - INFO - ffmpeg process 21104 has not terminated. Waiting to terminate...
+2025-07-02 13:16:31,762 - INFO - ffmpeg process 21104 should have terminated with a return code of 1.
+2025-07-02 13:16:39,102 - INFO - logging in using static token
+2025-07-02 13:16:40,912 - INFO - Shard ID None has connected to Gateway (Session ID: c1da41cd2658d98592f37d4c5381e2bc).
+2025-07-02 13:16:43,503 - INFO - Bot DJ_Pavlo#4392 is online and ready!
+2025-07-02 13:16:52,222 - INFO - User pablokun (546228577784561675) requested to play: 'https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=f23a9c516978466f' in guild 795978474832658434
+2025-07-02 13:16:52,222 - INFO - Connecting to voice...
+2025-07-02 13:16:52,223 - INFO - Starting voice handshake... (connection attempt 1)
+2025-07-02 13:16:52,717 - INFO - Voice handshake complete. Endpoint found: hongkong11045.discord.media
+2025-07-02 13:16:53,376 - INFO - Voice connection complete.
+2025-07-02 13:16:53,384 - INFO - Processing Spotify URL: https://open.spotify.com/playlist/07PNGcDHqHxAVZxXeZxn8I?si=f23a9c516978466f in guild 795978474832658434
+2025-07-02 13:16:54,833 - INFO - Found 236 tracks from Spotify URL in guild 795978474832658434
+2025-07-02 13:16:59,413 - INFO - Successfully queued Spotify track 'Meyaadha Maan | Idhayam Love - Megamo Aval Video Song | Vaibhav, Priya | Santhosh Narayanan' in guild 795978474832658434
+2025-07-02 13:16:59,887 - INFO - Playing next song in guild 795978474832658434: 'Idhayam Love (Megamo Aval)' (Spotify: True)
+2025-07-02 13:17:00,467 - INFO - Processing 235 additional tracks in background for guild 795978474832658434
+2025-07-02 13:17:00,468 - INFO - Starting background processing of 235 tracks for guild 795978474832658434
+2025-07-02 13:17:07,660 - INFO - User pablokun (546228577784561675) used skip button for 'Idhayam Love (Megamo Aval)' in guild 795978474832658434
+2025-07-02 13:17:07,676 - INFO - Finished playing 'Idhayam Love (Megamo Aval)' in guild 795978474832658434
+2025-07-02 13:17:07,677 - INFO - Playing next song in guild 795978474832658434: 'Mundhinam' (Spotify: True)
+2025-07-02 13:17:07,677 - INFO - ffmpeg process 12556 has not terminated. Waiting to terminate...
+2025-07-02 13:17:07,681 - INFO - ffmpeg process 12556 should have terminated with a return code of 1.
+2025-07-02 13:17:12,563 - INFO - User pablokun (546228577784561675) shuffled queue (1 songs) in guild 795978474832658434
+2025-07-02 13:22:14,803 - WARNING - Error adding track 'Vivek - Mervin, Mervin Solomon, Sameera Bharadwaj - Seramal Ponal' in guild 795978474832658434: [0;31mERROR:[0m [youtube] URgqLY3Z7PQ: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:22:40,081 - WARNING - Error adding track 'Harris Jayaraj, Karthik, Harini, Dr. Burn, Maya Iyer - Hasili Fisiliye' in guild 795978474832658434: [0;31mERROR:[0m [youtube] Gl_sIkw2XAA: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:22:48,302 - WARNING - Error adding track 'Anirudh Ravichander, Pragathi Guruprasad, Madhan Karky - Osaka Osaka' in guild 795978474832658434: [0;31mERROR:[0m [youtube] Ml5smnK5Taw: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:26:16,466 - WARNING - Error adding track 'Anirudh Ravichander, Adithya RK - Bae (From "Don")' in guild 795978474832658434: [0;31mERROR:[0m [youtube] -7n_krPLRgs: Requested format is not available. Use --list-formats for a list of available formats
+2025-07-02 13:33:50,804 - INFO - Background processing complete for guild 795978474832658434: 231/235 tracks added successfully
+2025-07-02 13:42:38,609 - INFO - The voice handshake is being terminated for Channel ID 795985639321501707 (Guild ID 795978474832658434)
+2025-07-02 13:42:38,610 - INFO - Finished playing 'Mundhinam' in guild 795978474832658434
+2025-07-02 13:42:38,610 - INFO - ffmpeg process 10092 has not terminated. Waiting to terminate...
+2025-07-02 13:42:38,611 - INFO - Playing next song in guild 795978474832658434: 'Enkeyoo Partha' (Spotify: True)
+2025-07-02 13:42:38,615 - INFO - ffmpeg process 10092 should have terminated with a return code of 1.
+2025-07-02 13:42:38,618 - INFO - ffmpeg process 19656 has not terminated. Waiting to terminate...
+2025-07-02 13:42:38,622 - INFO - ffmpeg process 19656 should have terminated with a return code of 1.
