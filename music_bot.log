@@ -119,3 +119,33 @@
 2025-07-02 14:18:44,899 - INFO - ffmpeg process 10604 should have terminated with a return code of 1.
 2025-07-02 14:18:44,902 - INFO - ffmpeg process 19660 has not terminated. Waiting to terminate...
 2025-07-02 14:18:44,904 - INFO - ffmpeg process 19660 should have terminated with a return code of 1.
+2025-07-02 14:35:00,903 - INFO - logging in using static token
+2025-07-02 14:35:02,808 - INFO - Shard ID None has connected to Gateway (Session ID: e864e67bf02cb4ba4a6c090a6bd76669).
+2025-07-02 14:35:05,599 - INFO - Bot DJ_Pavlo#4392 is online and ready!
+2025-07-02 14:35:16,059 - INFO - User pablokun (546228577784561675) requested to play: 'Arima Arima' in guild 795978474832658434
+2025-07-02 14:35:16,060 - INFO - Connecting to voice...
+2025-07-02 14:35:16,060 - INFO - Starting voice handshake... (connection attempt 1)
+2025-07-02 14:35:16,555 - INFO - Voice handshake complete. Endpoint found: hongkong11045.discord.media
+2025-07-02 14:35:17,216 - INFO - Voice connection complete.
+2025-07-02 14:35:19,902 - ERROR - Error searching for 'Arima Arima': [0;31mERROR:[0m [0;31mERROR:[0m Could not copy Chrome cookie database. See  https://github.com/yt-dlp/yt-dlp/issues/7271  for more info
+2025-07-02 14:35:19,903 - INFO - Attempting final fallback search for 'Arima Arima'
+2025-07-02 14:35:26,263 - INFO - Playing next song in guild 795978474832658434: 'Arima Arima Official Video Song | Enthiran | Rajinikanth | Aishwarya Rai | A.R.Rahman' (Spotify: False)
+2025-07-02 14:35:49,355 - INFO - The voice handshake is being terminated for Channel ID 795985639321501707 (Guild ID 795978474832658434)
+2025-07-02 14:35:49,371 - INFO - Finished playing 'Arima Arima Official Video Song | Enthiran | Rajinikanth | Aishwarya Rai | A.R.Rahman' in guild 795978474832658434
+2025-07-02 14:35:49,371 - INFO - ffmpeg process 17844 has not terminated. Waiting to terminate...
+2025-07-02 14:35:49,382 - INFO - ffmpeg process 17844 should have terminated with a return code of 1.
+2025-07-02 14:35:49,671 - INFO - Bot disconnected from voice channel in guild 795978474832658434
+2025-07-02 14:36:19,473 - INFO - User pablokun (546228577784561675) stopped playback via button in guild 795978474832658434. Song: 'Arima Arima Official Video Song | Enthiran | Rajinikanth | Aishwarya Rai | A.R.Rahman', Queue size: 0
+2025-07-02 14:43:34,802 - INFO - User pablokun (546228577784561675) requested to play: 'Arima Arima' in guild 795978474832658434
+2025-07-02 14:43:34,804 - INFO - Connecting to voice...
+2025-07-02 14:43:34,804 - INFO - Starting voice handshake... (connection attempt 1)
+2025-07-02 14:43:35,302 - INFO - Voice handshake complete. Endpoint found: hongkong11045.discord.media
+2025-07-02 14:43:35,935 - INFO - Voice connection complete.
+2025-07-02 14:43:37,357 - ERROR - Error searching for 'Arima Arima': [0;31mERROR:[0m [0;31mERROR:[0m Could not copy Chrome cookie database. See  https://github.com/yt-dlp/yt-dlp/issues/7271  for more info
+2025-07-02 14:43:37,357 - INFO - Attempting final fallback search for 'Arima Arima'
+2025-07-02 14:43:42,104 - INFO - Playing next song in guild 795978474832658434: 'Arima Arima Official Video Song | Enthiran | Rajinikanth | Aishwarya Rai | A.R.Rahman' (Spotify: False)
+2025-07-02 14:43:53,245 - INFO - The voice handshake is being terminated for Channel ID 795985639321501707 (Guild ID 795978474832658434)
+2025-07-02 14:43:53,249 - INFO - Finished playing 'Arima Arima Official Video Song | Enthiran | Rajinikanth | Aishwarya Rai | A.R.Rahman' in guild 795978474832658434
+2025-07-02 14:43:53,249 - INFO - ffmpeg process 9628 has not terminated. Waiting to terminate...
+2025-07-02 14:43:53,257 - INFO - ffmpeg process 9628 should have terminated with a return code of 1.
+2025-07-02 14:43:53,708 - INFO - Deleted now playing message when queue ended in guild 795978474832658434

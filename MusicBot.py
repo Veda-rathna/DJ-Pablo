@@ -602,6 +602,7 @@ async def handle_single_song(interaction, song_query, voice_client, guild_id):
 
 async def search_and_queue_song(song_query, guild_id, is_url=False, spotify_metadata=None):
     """Search for a song and add it to the queue with metadata"""
+    # Primary options - use cookies.txt if present for YouTube authentication
     ydl_options = {
         "format": "bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio[ext=m4a]/bestaudio",
         "noplaylist": True,
@@ -615,10 +616,17 @@ async def search_and_queue_song(song_query, guild_id, is_url=False, spotify_meta
         "no_warnings": True,  # Suppress warnings
         "socket_timeout": 30,  # Prevent hanging
         "retries": 3,  # Retry failed downloads
-        "cookiesfrombrowser": ("chrome",),  # Use Chrome cookies for YouTube auth
         "age_limit": 99,  # Bypass age restrictions
         "geo_bypass": True,  # Try to bypass geo-restrictions
     }
+
+    # Use cookies.txt if it exists in the project directory
+    cookies_path = os.path.join(os.path.dirname(__file__), "cookies.txt")
+    if os.path.exists(cookies_path):
+        ydl_options["cookies"] = cookies_path
+        logger.info(f"Using cookies.txt for yt-dlp: {cookies_path}")
+    else:
+        logger.info("No cookies.txt found, not using YouTube cookies for yt-dlp")
 
     if is_url:
         query = song_query
@@ -745,11 +753,25 @@ async def play_next_song(voice_client, guild_id, channel):
         ffmpeg_options = {
             "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5",
             "options": f"-vn {eq_options}",
-            # Remove executable if FFmpeg is in PATH
         }
 
+        # Detect OS and set ffmpeg executable path
+        import platform
+        import shutil
+        import os
+        system = platform.system().lower()
+        if system == "windows":
+            ffmpeg_exec = "bin/ffmpeg/ffmpeg.exe"
+        else:
+            # On Linux, use bundled ffmpeg if present, else system ffmpeg
+            bundled_linux_ffmpeg = os.path.join("bin", "ffmpeg", "ffmpeg")
+            if os.path.isfile(bundled_linux_ffmpeg) and os.access(bundled_linux_ffmpeg, os.X_OK):
+                ffmpeg_exec = bundled_linux_ffmpeg
+            else:
+                ffmpeg_exec = shutil.which("ffmpeg") or "ffmpeg"
+
         try:
-            source = discord.FFmpegOpusAudio(audio_url, **ffmpeg_options, executable="bin\\ffmpeg\\ffmpeg.exe")
+            source = discord.FFmpegOpusAudio(audio_url, **ffmpeg_options, executable=ffmpeg_exec)
         except Exception as e:
             logger.error(f"Failed to create audio source for '{title}' in guild {guild_id}: {e}")
             # Try next song if this one fails
@@ -1281,6 +1303,8 @@ class EQSelectionView(discord.ui.View):
             inline=False
         )
         
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+        
         await interaction.response.edit_message(embed=embed, view=None)
 
 
@@ -1411,28 +1435,68 @@ async def shuffle_command(interaction: discord.Interaction):
 
 
 # Alternative search function for when YouTube is having issues
-async def search_alternative_sources(song_query, guild_id, spotify_metadata=None):
-    """Try alternative audio sources when YouTube fails"""
-    logger.info(f"Trying alternative sources for: '{song_query}' in guild {guild_id}")
+def is_youtube_auth_error(error_msg):
+    """Check if the error is related to YouTube authentication issues"""
+    auth_error_keywords = [
+        "sign in to confirm you're not a bot",
+        "this video is unavailable",
+        "private video",
+        "video unavailable", 
+        "unable to extract video",
+        "cookies",
+        "login required",
+        "age-restricted",
+        "blocked"
+    ]
+    return any(keyword in error_msg.lower() for keyword in auth_error_keywords)
+
+def get_youtube_error_message(error_msg):
+    """Get user-friendly error message for YouTube errors"""
+    error_msg_lower = error_msg.lower()
     
-    # Try SoundCloud as fallback
-    soundcloud_options = {
-        "format": "bestaudio",
+    if "sign in to confirm you're not a bot" in error_msg_lower:
+        return "YouTube is temporarily blocking access. Try again in a few minutes or search for the song by name instead."
+    elif "private video" in error_msg_lower or "video unavailable" in error_msg_lower:
+        return "This video is private or unavailable. Try a different video or search by song name."
+    elif "age-restricted" in error_msg_lower:
+        return "This video is age-restricted. Try searching for the song by name instead."
+    elif "cookies" in error_msg_lower or "login required" in error_msg_lower:
+        return "YouTube access is restricted. Try searching for the song by name instead of using direct links."
+    elif "blocked" in error_msg_lower:
+        return "This content is blocked in your region. Try searching for an alternative version."
+    else:
+        return "YouTube access failed. Try searching for the song by name instead."
+
+
+async def search_alternative_sources(song_query, guild_id, spotify_metadata=None):
+    """Try alternative sources when YouTube fails"""
+    logger.info(f"Trying alternative sources for '{song_query}' in guild {guild_id}")
+    
+    # Try with simplified yt-dlp options (no cookies, basic search)
+    simple_options = {
+        "format": "bestaudio/best",
         "noplaylist": True,
         "quiet": True,
         "no_warnings": True,
+        "socket_timeout": 15,
+        "retries": 2,
         "extractaudio": True,
         "audioformat": "best",
-        "source_address": "0.0.0.0",  # Bind to all interfaces
     }
     
     try:
-        # Search SoundCloud
-        sc_query = f"scsearch1:{song_query}"
-        results = await search_ytdlp_async(sc_query, soundcloud_options)
+        # Try a more generic search
+        if spotify_metadata:
+            # For Spotify tracks, try just the song title without artist
+            alt_query = f"ytsearch1:{spotify_metadata.get('title', song_query)}"
+        else:
+            alt_query = f"ytsearch1:{song_query}"
+        
+        logger.info(f"Trying alternative search: '{alt_query}'")
+        results = await search_ytdlp_async(alt_query, simple_options)
         tracks = results.get("entries", [])
         
-        if tracks and tracks[0]:
+        if tracks:
             first_track = tracks[0]
             audio_url = first_track["url"]
             title = first_track.get("title", "Untitled")
@@ -1452,18 +1516,16 @@ async def search_alternative_sources(song_query, guild_id, spotify_metadata=None
                 "duration_str": duration_str,
                 "artwork_url": spotify_metadata.get("artwork_url") if spotify_metadata else None,
                 "artist": spotify_metadata.get("artist") if spotify_metadata else None,
-                "is_spotify": spotify_metadata.get("is_spotify", False) if spotify_metadata else False,
-                "source": "SoundCloud"
+                "is_spotify": bool(spotify_metadata)
             }
 
             SONG_QUEUES[guild_id].append(song_metadata)
-            logger.info(f"Found alternative source on SoundCloud: '{title}' for guild {guild_id}")
+            logger.info(f"Successfully found alternative source for '{song_query}': '{title}'")
             return title, duration_str
-            
+        
     except Exception as e:
-        logger.warning(f"SoundCloud search failed for '{song_query}': {e}")
+        logger.error(f"Alternative source search failed for '{song_query}': {e}")
     
-    logger.warning(f"All alternative sources failed for '{song_query}' in guild {guild_id}")
     return None
 
 # Helper function to handle YouTube authentication issues
@@ -1486,7 +1548,7 @@ def get_youtube_error_message(error_message):
     elif "private video" in error_message.lower() or "members-only" in error_message.lower():
         return "This video is private or members-only and cannot be played."
     elif "cookies" in error_message.lower():
-        return "YouTube access restricted. Try searching for the song by name instead of using direct links."
+        return "YouTube access is restricted. Try searching for the song by name instead of using direct links."
     elif "video unavailable" in error_message.lower():
         return "This video is unavailable in your region or has been removed."
     else:

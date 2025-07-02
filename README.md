@@ -42,6 +42,7 @@ A powerful, feature-rich Discord music bot with high-quality audio streaming, un
 - Discord Application with Bot Token
 - Spotify API credentials (for Spotify features)
 - FFmpeg (included in `/bin/ffmpeg/`)
+- (For YouTube playback) A valid `cookies.txt` file exported from your browser (see below)
 
 ### Installation
 
@@ -89,6 +90,19 @@ SPOTIFY_CLIENT_ID=your_spotify_client_id_here
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret_here
 ```
 
+### YouTube Authentication (cookies.txt)
+
+YouTube may block music bots running on servers or cloud hosts. To improve reliability, export your YouTube cookies from your browser and save them as `cookies.txt` in the bot's root directory.
+
+**How to export cookies:**
+- Use the [Get cookies.txt LOCALLY](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/jgbbilmfbammlbbhmmgaagdkbkepnijn) extension for Chrome, or [cookies.txt](https://addons.mozilla.org/en-US/firefox/addon/cookies-txt/) for Firefox.
+- Go to https://youtube.com while logged in, click the extension, and export cookies.
+- Place the `cookies.txt` file in the same folder as `MusicBot.py`.
+
+**Note:**
+- The bot will automatically use `cookies.txt` if present. If you run the bot on a server, YouTube may still block access due to IP reputation.
+- For best results, run the bot from your home network or a residential IP.
+
 ### Getting Your Credentials
 
 #### Discord Bot Token
@@ -131,7 +145,7 @@ https://discord.com/api/oauth2/authorize?client_id=YOUR_BOT_CLIENT_ID&permission
 
 ### Music Commands
 - `/play <song/url>` - Play a song, playlist, or album
-  - Supports: YouTube videos/playlists, Spotify tracks/playlists/albums
+  - Supports: YouTube videos/playlists (with cookies.txt), Spotify tracks/playlists/albums (searches YouTube for playback)
   - Unlimited playlist support (fetches ALL tracks)
 - `/pause` - Pause/resume current track
 - `/skip` - Skip to next track
@@ -156,13 +170,12 @@ The now playing embed includes interactive buttons:
 ## 🎚️ EQ Presets
 
 Choose from multiple audio profiles:
-- **Flat** - No modifications (default)
+- **Default** - Balanced sound
 - **Bass Boost** - Enhanced low frequencies
-- **Vocal** - Emphasizes vocal ranges
-- **Rock** - Optimized for rock music
-- **Classical** - Balanced for orchestral music
-- **Electronic** - Enhanced for electronic music
-- **Pop** - Optimized for pop music
+- **Enhanced** - Full range with bass boost
+- **Vocal Boost** - Clear vocals
+- **Treble Boost** - Crisp highs
+- **Cinema** - Movie-like sound
 
 Each server can set its own EQ preference, which persists across sessions.
 
@@ -177,6 +190,7 @@ DJ-Pablo/
 ├── .gitignore             # Git ignore rules
 ├── README.md              # This file
 ├── music_bot.log          # Generated log file
+├── cookies.txt            # (Optional) YouTube cookies for authentication
 └── bin/
     └── ffmpeg/            # FFmpeg binaries
         ├── ffmpeg.exe
@@ -207,6 +221,12 @@ Logs are **not** displayed in Discord channels to keep them clean.
 - Confirm FFmpeg is in the `/bin/ffmpeg/` directory
 - Check voice channel permissions
 - Ensure bot has "Connect" and "Speak" permissions
+
+#### YouTube "Sign in to confirm you're not a bot" error
+- YouTube may block access from server/cloud IPs even with cookies.txt
+- Try running the bot from your home network or a residential proxy
+- Make sure your `cookies.txt` is up-to-date and exported while logged in to YouTube
+- See logs in `music_bot.log` for details
 
 #### Spotify features not working
 - Verify Spotify credentials in `.env`

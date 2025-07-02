@@ -1,4 +1,5 @@
 \venv
 .env
 .cache
-
+cookies.txt
+music_bot.log
