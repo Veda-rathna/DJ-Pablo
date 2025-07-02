@@ -480,10 +480,16 @@ async def handle_spotify_url(interaction, url, voice_client, guild_id):
                     asyncio.create_task(process_remaining_tracks(tracks[1:], guild_id, interaction.channel))
             else:
                 logger.error(f"Could not find Spotify track on YouTube: '{first_track['query']}' in guild {guild_id}")
-                await interaction.followup.send("❌ Could not find the first song on YouTube.")
+                await interaction.followup.send(f"❌ Could not find **{first_track['title']}** by **{first_track.get('artist', 'Unknown Artist')}** on YouTube. This might be due to YouTube access restrictions or the song not being available.")
         except Exception as e:
             logger.error(f"Error processing Spotify content in guild {guild_id}: {str(e)}")
-            await interaction.followup.send(f"❌ Error processing Spotify content: {str(e)}")
+            error_msg = str(e)
+            if "Sign in to confirm you're not a bot" in error_msg:
+                await interaction.followup.send("❌ YouTube is currently blocking access. Please try again in a few minutes, or try playing the song directly from YouTube instead.")
+            elif "cookies" in error_msg.lower():
+                await interaction.followup.send("❌ YouTube access is restricted. Try searching for the song by name instead of using Spotify links.")
+            else:
+                await interaction.followup.send(f"❌ Error processing Spotify content. Try using a direct search instead.")
     else:
         logger.warning(f"No tracks found in Spotify content for guild {guild_id}")
         await interaction.followup.send("❌ No tracks found in Spotify content.")
@@ -574,19 +580,24 @@ async def handle_single_song(interaction, song_query, voice_client, guild_id):
     try:
         song_info = await search_and_queue_song(song_query, guild_id)
         if not song_info:
-            await interaction.followup.send("No results found.")
+            await interaction.followup.send("❌ No results found. Try a different search term or check if the URL is accessible.")
             return
         
         title, duration_str = song_info
         
         if voice_client.is_playing() or voice_client.is_paused():
-            await interaction.followup.send(f"Added to queue: **{title}**{duration_str}")
+            await interaction.followup.send(f"✅ Added to queue: **{title}**{duration_str}")
         else:
-            await interaction.followup.send(f"Now playing: **{title}**{duration_str}")
+            await interaction.followup.send(f"✅ Now playing: **{title}**{duration_str}")
             await play_next_song(voice_client, guild_id, interaction.channel)
             
     except Exception as e:
-        await interaction.followup.send(f"Error searching for song: {str(e)}")
+        error_msg = str(e)
+        if is_youtube_auth_error(error_msg):
+            user_friendly_msg = get_youtube_error_message(error_msg)
+            await interaction.followup.send(f"❌ {user_friendly_msg}")
+        else:
+            await interaction.followup.send(f"❌ Error searching for song: {error_msg}")
 
 
 async def search_and_queue_song(song_query, guild_id, is_url=False, spotify_metadata=None):
@@ -604,6 +615,9 @@ async def search_and_queue_song(song_query, guild_id, is_url=False, spotify_meta
         "no_warnings": True,  # Suppress warnings
         "socket_timeout": 30,  # Prevent hanging
         "retries": 3,  # Retry failed downloads
+        "cookiesfrombrowser": ("chrome",),  # Use Chrome cookies for YouTube auth
+        "age_limit": 99,  # Bypass age restrictions
+        "geo_bypass": True,  # Try to bypass geo-restrictions
     }
 
     if is_url:
@@ -611,11 +625,59 @@ async def search_and_queue_song(song_query, guild_id, is_url=False, spotify_meta
     else:
         query = "ytsearch1: " + song_query
     
-    results = await search_ytdlp_async(query, ydl_options)
-    tracks = results.get("entries", [])
+    try:
+        results = await search_ytdlp_async(query, ydl_options)
+        tracks = results.get("entries", [])
 
-    if not tracks:
-        return None
+        if not tracks:
+            # Try fallback with different options if no results
+            logger.warning(f"No results found for '{song_query}', trying fallback options")
+            fallback_options = ydl_options.copy()
+            del fallback_options["cookiesfrombrowser"]  # Remove cookie requirement
+            fallback_options["extractor_args"] = {"youtube": {"skip": ["dash", "hls"]}}
+            
+            try:
+                results = await search_ytdlp_async(query, fallback_options)
+                tracks = results.get("entries", [])
+            except Exception as fallback_error:
+                logger.error(f"Fallback search also failed for '{song_query}': {fallback_error}")
+                return None
+
+        if not tracks:
+            logger.warning(f"No tracks found for query: '{song_query}'")
+            return None
+
+    except Exception as e:
+        logger.error(f"Error searching for '{song_query}': {str(e)}")
+        
+        # Try one more fallback without cookies and with simpler options
+        try:
+            logger.info(f"Attempting final fallback search for '{song_query}'")
+            simple_options = {
+                "format": "bestaudio/best",
+                "noplaylist": True,
+                "quiet": True,
+                "no_warnings": True,
+                "extractaudio": True,
+                "audioformat": "best",
+            }
+            
+            results = await search_ytdlp_async(query, simple_options)
+            tracks = results.get("entries", [])
+            
+            if not tracks:
+                logger.error(f"All search attempts failed for '{song_query}'")
+                return None
+                
+        except Exception as final_error:
+            logger.error(f"Final fallback search failed for '{song_query}': {final_error}")
+            
+            # Try alternative sources as last resort
+            if not is_url:  # Only try alternatives for search queries, not direct URLs
+                logger.info(f"Trying alternative sources for '{song_query}'")
+                return await search_alternative_sources(song_query, guild_id, spotify_metadata)
+            
+            return None
 
     first_track = tracks[0]
     audio_url = first_track["url"]
@@ -873,7 +935,8 @@ async def help_command(interaction: discord.Interaction):
         name="📋 Queue Commands",
         value="`/queue` - Show the current song queue\n"
               "`/nowplaying` - Show the currently playing song\n"
-              "`/shuffle` - Shuffle the current queue",
+              "`/shuffle` - Shuffle the current queue\n"
+              "`/status` - Check bot status and troubleshooting",
         inline=False
     )
     
@@ -892,6 +955,14 @@ async def help_command(interaction: discord.Interaction):
               "`/play https://open.spotify.com/playlist/...`\n"
               "`/play https://youtube.com/playlist?list=...`\n"
               "`/play https://youtu.be/dQw4w9WgXcQ`",
+        inline=False
+    )
+    
+    embed.add_field(
+        name="🔧 Troubleshooting",
+        value="• If YouTube links fail, try searching by song name\n"
+              "• Use `/status` to check bot health and get tips\n"
+              "• SoundCloud is used as backup when needed",
         inline=False
     )
     
@@ -1336,6 +1407,158 @@ async def shuffle_command(interaction: discord.Interaction):
     )
     
     logger.info(f"User {user} ({user.id}) shuffled queue ({len(queue_list)} songs) in guild {guild_id}")
+    await interaction.response.send_message(embed=embed)
+
+
+# Alternative search function for when YouTube is having issues
+async def search_alternative_sources(song_query, guild_id, spotify_metadata=None):
+    """Try alternative audio sources when YouTube fails"""
+    logger.info(f"Trying alternative sources for: '{song_query}' in guild {guild_id}")
+    
+    # Try SoundCloud as fallback
+    soundcloud_options = {
+        "format": "bestaudio",
+        "noplaylist": True,
+        "quiet": True,
+        "no_warnings": True,
+        "extractaudio": True,
+        "audioformat": "best",
+        "source_address": "0.0.0.0",  # Bind to all interfaces
+    }
+    
+    try:
+        # Search SoundCloud
+        sc_query = f"scsearch1:{song_query}"
+        results = await search_ytdlp_async(sc_query, soundcloud_options)
+        tracks = results.get("entries", [])
+        
+        if tracks and tracks[0]:
+            first_track = tracks[0]
+            audio_url = first_track["url"]
+            title = first_track.get("title", "Untitled")
+            duration = first_track.get("duration", 0)
+            
+            # Format duration
+            if duration:
+                minutes, seconds = divmod(duration, 60)
+                duration_str = f" ({minutes}:{seconds:02d})"
+            else:
+                duration_str = ""
+
+            # Create song metadata
+            song_metadata = {
+                "audio_url": audio_url,
+                "title": title,
+                "duration_str": duration_str,
+                "artwork_url": spotify_metadata.get("artwork_url") if spotify_metadata else None,
+                "artist": spotify_metadata.get("artist") if spotify_metadata else None,
+                "is_spotify": spotify_metadata.get("is_spotify", False) if spotify_metadata else False,
+                "source": "SoundCloud"
+            }
+
+            SONG_QUEUES[guild_id].append(song_metadata)
+            logger.info(f"Found alternative source on SoundCloud: '{title}' for guild {guild_id}")
+            return title, duration_str
+            
+    except Exception as e:
+        logger.warning(f"SoundCloud search failed for '{song_query}': {e}")
+    
+    logger.warning(f"All alternative sources failed for '{song_query}' in guild {guild_id}")
+    return None
+
+# Helper function to handle YouTube authentication issues
+def is_youtube_auth_error(error_message):
+    """Check if the error is related to YouTube authentication"""
+    auth_keywords = [
+        "sign in to confirm you're not a bot",
+        "cookies",
+        "authentication",
+        "login_required",
+        "private video",
+        "members-only"
+    ]
+    return any(keyword in error_message.lower() for keyword in auth_keywords)
+
+def get_youtube_error_message(error_message):
+    """Get a user-friendly error message for YouTube issues"""
+    if "sign in to confirm you're not a bot" in error_message.lower():
+        return "YouTube is blocking bot access. Try again in a few minutes or search by song name instead."
+    elif "private video" in error_message.lower() or "members-only" in error_message.lower():
+        return "This video is private or members-only and cannot be played."
+    elif "cookies" in error_message.lower():
+        return "YouTube access restricted. Try searching for the song by name instead of using direct links."
+    elif "video unavailable" in error_message.lower():
+        return "This video is unavailable in your region or has been removed."
+    else:
+        return "YouTube access error. Try searching for the song by name instead."
+
+
+@bot.tree.command(name="status", description="Check bot status and troubleshooting info")
+async def status_command(interaction: discord.Interaction):
+    guild_id = str(interaction.guild_id)
+    voice_client = interaction.guild.voice_client
+    
+    embed = discord.Embed(
+        title="🤖 Bot Status",
+        color=0x00ff00
+    )
+    
+    # Voice connection status
+    if voice_client and voice_client.is_connected():
+        channel_name = voice_client.channel.name
+        if voice_client.is_playing():
+            status = f"🔊 Connected to **{channel_name}** - Playing music"
+        elif voice_client.is_paused():
+            status = f"⏸️ Connected to **{channel_name}** - Paused"
+        else:
+            status = f"🔌 Connected to **{channel_name}** - Idle"
+    else:
+        status = "❌ Not connected to any voice channel"
+    
+    embed.add_field(name="🎵 Voice Status", value=status, inline=False)
+    
+    # Queue status
+    queue_count = len(SONG_QUEUES.get(guild_id, []))
+    if queue_count > 0:
+        queue_status = f"📋 {queue_count} songs in queue"
+    else:
+        queue_status = "📋 Queue is empty"
+    
+    embed.add_field(name="🎶 Queue Status", value=queue_status, inline=True)
+    
+    # Current EQ setting
+    current_eq = GUILD_EQ_SETTINGS.get(guild_id, "enhanced")
+    eq_names = {
+        "default": "🎵 Default",
+        "bass_boost": "🔊 Bass Boost",
+        "enhanced": "✨ Enhanced",
+        "vocal_boost": "🎤 Vocal Boost",
+        "treble_boost": "🔔 Treble Boost",
+        "cinema": "🎬 Cinema"
+    }
+    embed.add_field(name="🎛️ Current EQ", value=eq_names[current_eq], inline=True)
+    
+    # Spotify integration status
+    if spotify_client:
+        spotify_status = "✅ Available"
+    else:
+        spotify_status = "❌ Not configured"
+    
+    embed.add_field(name="🎵 Spotify Integration", value=spotify_status, inline=True)
+    
+    # Troubleshooting info
+    embed.add_field(
+        name="🔧 Troubleshooting",
+        value="• If YouTube links fail, try searching by song name\n"
+              "• For Spotify issues, use `/play song name artist` instead\n"
+              "• SoundCloud is used as backup when YouTube is blocked\n"
+              "• Use `/help` for all available commands",
+        inline=False
+    )
+    
+    embed.set_footer(text="Bot is running normally • Use /help for commands")
+    embed.timestamp = discord.utils.utcnow()
+    
     await interaction.response.send_message(embed=embed)
 
 
