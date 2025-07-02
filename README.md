@@ -1,4 +1,4 @@
-# 🎵 Discord Music Bot - Remastered
+# 🎵 DJ Pablo
 
 A powerful, feature-rich Discord music bot with high-quality audio streaming, unlimited playlist support, interactive controls, and advanced EQ capabilities.
 
@@ -47,8 +47,8 @@ A powerful, feature-rich Discord music bot with high-quality audio streaming, un
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/Discord-Music-Bot-Remastered.git
-   cd Discord-Music-Bot-Remastered
+   git clone https://github.com/yourusername/DJ-Pablo.git
+   cd DJ-Pablo
    ```
 
 2. **Install Dependencies**
@@ -169,7 +169,7 @@ Each server can set its own EQ preference, which persists across sessions.
 ## 📁 Project Structure
 
 ```
-Discord-Music-Bot-Remastered/
+DJ-Pablo/
 ├── MusicBot.py              # Main bot application
 ├── requirements.txt         # Python dependencies
 ├── .env                    # Environment variables (create from .env.example)
@@ -312,6 +312,6 @@ Future features under consideration:
 
 ---
 
-**Made with ❤️ for the Discord community**
+**Made with ❤️ by you for the Discord community**
 
-*High-quality music streaming, unlimited playlists, modern UI, and advanced features - all in one powerful bot.*
+*DJ Pablo - High-quality music streaming, unlimited playlists, modern UI, and advanced features - all in one powerful bot.*
